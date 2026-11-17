@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Replace __REPO__ with the repo's full path and __HOME__ / __USER__ with yours, then:
+     cp launchd/linkedin-post-results.plist ~/Library/LaunchAgents/local.linkedin-post-results.plist
+     launchctl load ~/Library/LaunchAgents/local.linkedin-post-results.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.linkedin-post-results</string>
+    <key>WorkingDirectory</key>
+    <string>__REPO__</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__REPO__/.venv/bin/python3</string>
+        <string>scripts/linkedin_post_results.py</string>
+        <string>tick</string>
+    </array>
+    <!-- Daily 07:15: LinkedIn's numbers for the posts that are due; on Mondays the rules from the numbers. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>15</integer>
+    </dict>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>__REPO__/data/logs/linkedin-post-results.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__REPO__/data/logs/linkedin-post-results.err.log</string>
+    <!-- USER/LOGNAME: a headless claude CLI needs them to read its keychain login. -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>__HOME__</string>
+        <key>USER</key>
+        <string>__USER__</string>
+        <key>LOGNAME</key>
+        <string>__USER__</string>
+    </dict>
+</dict>
+</plist>

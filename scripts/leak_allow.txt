@@ -1,0 +1,25 @@
+# Plain words the leak check skips: words that also happen to be part of a name in someone's private terms list.
+# A term to skip everywhere, or path:term to skip it in one file only. Add a word only after checking the hit is the
+# plain word, not the private name.
+127.0.0.1
+linkedin
+google ads
+media
+lead
+owner
+agency
+contact
+company
+meeting
+peer
+lost
+pause
+carry
+kunde
+ghost
+forsikring
+README.md:rm marketing
+noreply@anthropic.com
+LICENSE:deal
+LICENSE:fitness
+LICENSE:rm marketing

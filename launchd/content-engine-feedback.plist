@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Replace __REPO__ with the repo's full path and __HOME__ / __USER__ with yours, then:
+     cp launchd/content-engine-feedback.plist ~/Library/LaunchAgents/local.content-engine-feedback.plist
+     launchctl load ~/Library/LaunchAgents/local.content-engine-feedback.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.content-engine-feedback</string>
+    <key>WorkingDirectory</key>
+    <string>__REPO__</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__REPO__/.venv/bin/python3</string>
+        <string>scripts/content_engine_feedback.py</string>
+        <string>--auto</string>
+    </array>
+    <!-- Every hour: the posting bot, new videos, the next batch from a new call, photos, LinkedIn messages, the plan, and then replies and edits become changes in the doc. -->
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>__REPO__/data/logs/content-engine-feedback.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__REPO__/data/logs/content-engine-feedback.err.log</string>
+    <!-- USER/LOGNAME: a headless claude CLI needs them to read its keychain login. -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>__HOME__</string>
+        <key>USER</key>
+        <string>__USER__</string>
+        <key>LOGNAME</key>
+        <string>__USER__</string>
+    </dict>
+</dict>
+</plist>

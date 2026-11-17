@@ -1,0 +1,140 @@
+# Content engine settings. Copy to config.toml (git-ignored) and fill in. Every value here has a default in
+# scripts/ce_config.py; an empty value means "use the default" or "not used". Paths are relative to the repo root
+# unless they start with / or ~.
+
+[paths]
+data_dir = "data"                    # batches, knowledge base (data/kb), briefs, state. Keep it out of git.
+tokens_dir = "tokens"                # API keys and OAuth tokens. Keep it out of git.
+cache_dir = "~/.cache/content-engine"  # downloads, renders, photo copies, locks
+
+[author]
+name = "Freja Eksempel"                # the person the posts are written for (made-up example)
+first_name = "Freja"                  # how transcripts and prompts name them; also the third-person check in posts
+language = "da"                      # the posts' language and the voice bank's
+business = "Example Studio"
+pitch = "websites for Danish craft businesses"   # one line: what they sell, to whom
+voice = "casual, warm, humorous, self-ironic"   # the tone the drafter writes in
+dialect_note = ""                    # e.g. "A regional word of their own now and then (only ones they use)."
+emoji = "😇 😅 🙏 🦾 🥰 😍 🤓 😎 👀 🫣 🫠 🫡"     # the only emoji a post may use, at most one
+own_words = ["sgu", "satme"]         # their own words the native-Danish read leaves alone
+never_words = []                     # regexes for words they never use, e.g. ["dramatisk\\w*"]
+gap_marker = "[AUTHOR"               # a gap the drafter leaves in a post ("[AUTHOR: which example?]"): never posted
+mail_from = "Content Engine <me@example.com>"   # the From line of notes placed in your own inbox (never sent)
+mail_to = "me@example.com"
+own_addresses = ["me@example.com"]   # your addresses: mail from these is "yours", the rest is "them"
+own_domains = ["example.com"]
+
+[llm]
+model = "claude-opus-5-5"            # drafting, feedback, graphics, photos, video proofreading
+small_model = "claude-haiku-5-5"     # sorting LinkedIn conversations
+backend = "auto"                     # auto (Claude Code CLI if installed, else the API) | api | subscription
+claude_bin = ""                      # path to the `claude` CLI; empty = find it on PATH
+
+[drafting]
+batch_size = 7
+auto_approve_from = ""               # YYYY-MM-DD: from then a post with an empty Check line is approved by itself
+no_colons = false                    # true: a colon in a post counts as a rule break
+english_tab = false                  # true: an English copy of every batch tab, for a reviewer who doesn't read Danish
+proposed_tag = "[Proposed by the author]"   # the tag in story_seeds.md for a seed the author asked for
+
+[google]
+token_file = "google_token.json"     # in tokens_dir, made by `python3 scripts/google_api.py login`
+gmail_token_file = ""                # a separate Gmail token, if your mail is another account; empty = token_file
+client_secret_file = "google_client_secret.json"  # your OAuth client (Desktop app) from Google Cloud Console
+doc_id = ""                          # the posts doc: every batch is a tab (the id from its URL)
+drive_root_id = ""                   # the engine's Drive folder: Graphics and the plan sheet are made inside it
+photos_folder_id = ""                # optional: a Drive folder you drop photos in
+video_inbox_id = ""                  # the Drive folder raw recordings go into
+finished_videos_id = ""              # the Drive folder finished videos go to
+video_sop_url = ""                   # optional: a link to a one-page recording guide, shown atop the Video scripts tab
+
+[elevenlabs]
+key_file = "elevenlabs_api_key.txt"  # in tokens_dir: your ElevenLabs API key
+agent_name = "Content Interviewer"
+llm = "claude-sonnet-5-5"            # the agent's LLM; must be one ElevenLabs offers
+tts_model = "eleven_flash_v2_5"      # must support the call's language
+language = "da"                      # the language the agent listens for
+max_call_minutes = 35
+voice_en = ""                        # voice ids (`content_engine_interviewer.py voices` lists some)
+voice_da = ""
+keyterms = []                        # names and terms the speech recognition should know
+openers = []                         # first lines, one picked at random per call; "{first}" = the author's first name
+lookup_url = ""                      # your own webhook server for live lookups during the call (not included)
+lookup_keys_file = "engine_lookup_keys.json"   # in tokens_dir: {"lookup_key": "...", "agent_key": "..."}
+
+[linkedin]
+profile_slug = ""                    # the part after linkedin.com/in/ in your profile URL
+api_version = "202610"               # LinkedIn-Version header; LinkedIn keeps a version live about a year
+post_app_file = "linkedin_post_app.json"         # posting app: Share on LinkedIn + Sign In with OpenID Connect
+post_token_file = "linkedin_post_token.json"
+post_port = 8765                     # the posting app's redirect URL: http://localhost:<port>/linkedin/callback
+analytics_app_file = "linkedin_analytics_app.json"   # analytics app: Community Management API
+analytics_token_file = "linkedin_analytics_token.json"
+analytics_port = 8767
+analytics_call_cap = 80              # calls per 24 h; the Development tier allows 100 per member
+dma_token_file = "linkedin_dma_token.json"       # Member Data Portability API token: {"access_token": "..."}
+dma_server_ssh = ""                  # optional: user@host to copy the message index to, for your lookup server
+dma_server_index = ""                # optional: the index's path on that server
+
+[plan]
+timezone = "Europe/Copenhagen"       # the posting plan's time zone
+weekdays = [0, 2, 4]                 # posting days, Monday = 0
+daily_from = ""                      # YYYY-MM-DD: from then every day is a posting day
+anchor = "2026-01-01"                # the first posting day the time slots are drawn from
+slot_from = "06:40"                  # every posting day gets its own uneven time in this window
+slot_to = "11:55"
+slot_apart_minutes = 40              # never this close to the posting day before
+pauses = []                          # days without engine posts, e.g. [["2026-12-20", "2026-12-31"]]
+scheduler_tz = ""                    # someone who schedules by hand from the sheet: their time zone
+runway_min = 2                       # a note when this few posts or fewer are planned ahead
+
+[posting]
+mode = "test"                        # test (only logs what it would post) | live | off
+host = "mac"                         # mac | server: only this machine posts
+server_ssh = ""                      # user@host of a server that posts while the Mac is off (optional)
+server_repo = ""                     # this repo's path on that server
+server_python = ""                   # the server's python, e.g. /opt/content-engine/.venv/bin/python
+server_log = ""                      # the bot's log on the server, outside the repo copy
+
+[photos]
+library = "~/Pictures/Photos Library.photoslibrary"
+me_names = ["me"]                    # what Photos calls the author under People
+reference_photo = ""                 # a known photo of the author (also the 'portrait' art on graphics)
+search_language = "Danish"           # the language of the Mac, for Photos' search field
+describe_hint = "a business owner"   # a few words about the author for the photo describer
+extra_rules = ""                     # extra rules for the photo picker, e.g. "Never a photo with children in it."
+
+[visuals]
+brand_name = "Example Studio"        # the logo's alt text
+navy = "#192230"                     # dark background and text
+accent = "#84CE18"                   # the accent: bars, step numbers, the spoken word in captions
+cloud = "#F8FAFC"                    # light background
+ink2 = "#3E4B63"                     # secondary text
+line = "#D9E0EA"                     # borders
+font_regular = "/System/Library/Fonts/Supplemental/Arial.ttf"
+font_bold = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"   # also the video captions' font
+font_light = "/System/Library/Fonts/Supplemental/Arial.ttf"
+logo_light = ""                      # a PNG of your logo for light backgrounds
+logo_dark = ""                       # and for dark backgrounds
+art_dir = "templates/art"            # your own drawings: name.svg + name.json
+
+[video]
+glossary = "Øh, øhm. LinkedIn, Google."   # names and words Whisper should spell right, plus the fillers
+whisper_model = "large-v3"           # Danish needs large-v3; it is downloaded once (about 3 GB)
+
+[scout]
+days = 7
+max_stories = 2
+max_mails = 30
+contacts_file = ""                   # JSON {"by_email": {"someone@example.dk": "client"}, "by_domain": {"example.dk": "lead"}}
+banned_names_file = ""               # names that must never reach a story, one per line
+facts_plugin = ""                    # a Python file with collect(start, end) -> dict of your own weekly facts
+private_topics = []                  # extra words that keep a story out (taxes, health etc. are built in)
+
+[sources]
+transcripts_dir = ""                 # call transcripts from any note taker (.txt .vtt .srt .docx .json), for --call and the voice bank
+speaker = ""                         # your name as the note taker writes it (part of it is enough: "Freja")
+mail_label = "Content engine"        # Gmail label that transcripts.py sync-mail saves into transcripts_dir
+meetgeek_dir = ""                    # older setups: a folder of MeetGeek JSON, read the same way as transcripts_dir
+meetgeek_speaker = ""                # older name for speaker
+wispr_db = "~/Library/Application Support/Wispr Flow/flow.sqlite"

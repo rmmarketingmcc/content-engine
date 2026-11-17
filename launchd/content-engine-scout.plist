@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Replace __REPO__ with the repo's full path and __HOME__ / __USER__ with yours, then:
+     cp launchd/content-engine-scout.plist ~/Library/LaunchAgents/local.content-engine-scout.plist
+     launchctl load ~/Library/LaunchAgents/local.content-engine-scout.plist -->
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>local.content-engine-scout</string>
+    <key>WorkingDirectory</key>
+    <string>__REPO__</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__REPO__/.venv/bin/python3</string>
+        <string>scripts/content_engine_scout.py</string>
+        <string>--push</string>
+    </array>
+    <!-- Sundays 12:00: a fresh interviewer brief from the week's mail before the week's call. -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>0</integer>
+        <key>Hour</key>
+        <integer>12</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>RunAtLoad</key>
+    <false/>
+    <key>StandardOutPath</key>
+    <string>__REPO__/data/logs/content-engine-scout.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__REPO__/data/logs/content-engine-scout.err.log</string>
+    <!-- USER/LOGNAME: a headless claude CLI needs them to read its keychain login. -->
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>__HOME__</string>
+        <key>USER</key>
+        <string>__USER__</string>
+        <key>LOGNAME</key>
+        <string>__USER__</string>
+    </dict>
+</dict>
+</plist>
