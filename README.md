@@ -15,6 +15,19 @@ updates are promised, and issues are turned off. Fork it and make it yours.
 LinkedIn can shut an app off without warning. `[posting] mode` starts at `test` (it only logs what it would post);
 read the terms before you set it to `live`, or post by hand from the plan sheet.
 
+## An open-source alternative to Taplio, Supergrow and AuthoredUp
+
+| | Content Engine | Taplio, Supergrow, AuthoredUp and similar |
+|---|---|---|
+| Where the posts come from | A weekly voice interview about what actually happened to you | Your prompts, templates and viral-post libraries |
+| Your voice | Every word checked against words you have really said; corrections become rules | The tool's AI style, adjusted by settings |
+| Photos, graphics, video | Picked from your own photo library, drawn, and your recordings cut and captioned | Mostly text, with image tools in some |
+| Price | Free, MIT; you pay your own Claude and ElevenLabs use | Monthly subscription |
+| Platform | Your own Mac; the posts are written in Danish | Web |
+
+Pick one of them if you want a web app that works in a minute. Pick this if you want posts from your own stories, in
+your own words, and the whole thing on your own machine.
+
 Code and this README are in English. Danish is product behaviour: the posts, the Danish word checks, the captions.
 
 ## The weekly loop
